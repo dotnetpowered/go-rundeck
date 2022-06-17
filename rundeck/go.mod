@@ -1,4 +1,4 @@
-module github.com/rundeck/go-rundeck/rundeck
+module github.com/dotnetpowered/go-rundeck/rundeck
 
 go 1.12
 
@@ -8,4 +8,4 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 )
 
-replace github.com/rundeck/go-rundeck/rundeck/auth => ./auth
+replace github.com/dotnetpowered/go-rundeck/rundeck/auth => ./auth
