@@ -1021,7 +1021,7 @@ func (client BaseClient) JobExecutionEnableResponder(resp *http.Response) (resul
 // JobExecutionList sends the job execution list request.
 // Parameters:
 // ID - job ID
-func (client BaseClient) JobExecutionList(ctx context.Context, ID string) (result ExecutionList, err error) {
+func (client BaseClient) JobExecutionList(ctx context.Context, ID string, Max int32) (result ExecutionList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.JobExecutionList")
 		defer func() {
@@ -1032,7 +1032,7 @@ func (client BaseClient) JobExecutionList(ctx context.Context, ID string) (resul
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.JobExecutionListPreparer(ctx, ID)
+	req, err := client.JobExecutionListPreparer(ctx, ID, Max)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "rundeck.BaseClient", "JobExecutionList", nil, "Failure preparing request")
 		return
@@ -1054,15 +1054,16 @@ func (client BaseClient) JobExecutionList(ctx context.Context, ID string) (resul
 }
 
 // JobExecutionListPreparer prepares the JobExecutionList request.
-func (client BaseClient) JobExecutionListPreparer(ctx context.Context, ID string) (*http.Request, error) {
+func (client BaseClient) JobExecutionListPreparer(ctx context.Context, ID string, Max int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"id": autorest.Encode("path", ID),
+		"id":  autorest.Encode("path", ID),
+		"max": Max,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/job/{id}/executions", pathParameters))
+		autorest.WithPathParameters("/job/{id}/executions?max={max}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
